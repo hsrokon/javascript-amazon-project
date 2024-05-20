@@ -5,6 +5,9 @@
 -then we use java script to generate the html using the data ( like from products.js)
 */
 
+import { cart } from '../data/cart.js';
+//..represents outside of the current folder | / goint to the desired folder | load the path | imports will bw at the top of the file | get modules to work we've to open with live server
+
 //combining all the html together
 let productsHTML ='';
 
