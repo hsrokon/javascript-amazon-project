@@ -5,7 +5,7 @@
 -then we use java script to generate the html using the data ( like from products.js)
 */
 import { products } from '../data/products.js';
-import { cart } from '../data/cart.js';
+import { cart, addToCart } from '../data/cart.js';
 //..represents outside of the current folder | / goint to the desired folder | load the path | imports will bw at the top of the file | get modules to work we've to open with live server
 
 //combining all the html together
@@ -69,37 +69,21 @@ products.forEach ((product) => {
 //Using DOM
 document.querySelector('.js-products-grid').innerHTML = productsHTML;//changing inner html of .js-pro...rid into productsHTML
 
+function updateCartQuantity () {
+   // add total cart quantity for homepage cart corner
+   let cartQuantity = 0; 
+   cart.forEach((cartItem) => {
+     cartQuantity += cartItem.quantity; 
+   });
+   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
 //this will select all the add to cart buttons 
 document.querySelectorAll('.js-add-to-cart')
 .forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;//dataset gives us all the data attribute that is attatched to this button | productId went kebab case to camel case and we got it from [data-product-id (<<-) ="${product.id}"]
-
-
-    let matchingItem;//if we find a matching item we're going to save it here
-    cart.forEach((item) => { //item (parameter) will contain product name and quantity
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
-
-    if (matchingItem) { // if we find any matching item it will be an object | it's a truthy value
-      matchingItem.quantity += 1;
-    } else {
-      cart.push({
-        productId : productId,
-        quantity : 1
-      });
-    }  
-
-    // add total cart quantity for homepage cart corner
-    let cartQuantity = 0;
-    
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-      
-    });
-    
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    addToCart(productId);
+    updateCartQuantity();
   });
 });
