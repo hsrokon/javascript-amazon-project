@@ -69,14 +69,13 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;//changing 
 document.querySelectorAll('.js-add-to-cart')//this will select all the add to cart buttons 
 .forEach((button) => {
   button.addEventListener('click', () => {
-    const productId = button.dataset.productId;
-    //dataset gives us all the data attribute that is attatched to this button
+    const productId = button.dataset.productId;//dataset gives us all the data attribute that is attatched to this button | productId went kebab case to camel case and we got it from [data-product-id (<<-) ="${product.id}"]
 
 
-    let matchingItem;//if we a matching item we're going to save it here
-    cart.forEach((item) => { //item (parameter) contain product name and quantity
+    let matchingItem;//if we find a matching item we're going to save it here
+    cart.forEach((item) => { //item (parameter) will contain product name and quantity
       if (productId === item.productId) {
-        matchingItem = item;
+        matchingItem = item;// we'll take item into matching item
       }
     });
 
