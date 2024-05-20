@@ -66,7 +66,8 @@ products.forEach ((product) => {
 //Using DOM
 document.querySelector('.js-products-grid').innerHTML = productsHTML;//changing inner html of .js-pro...rid into productsHTML
 
-document.querySelectorAll('.js-add-to-cart')//this will select all the add to cart buttons 
+//this will select all the add to cart buttons 
+document.querySelectorAll('.js-add-to-cart')
 .forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;//dataset gives us all the data attribute that is attatched to this button | productId went kebab case to camel case and we got it from [data-product-id (<<-) ="${product.id}"]
@@ -75,7 +76,7 @@ document.querySelectorAll('.js-add-to-cart')//this will select all the add to ca
     let matchingItem;//if we find a matching item we're going to save it here
     cart.forEach((item) => { //item (parameter) will contain product name and quantity
       if (productId === item.productId) {
-        matchingItem = item;// we'll take item into matching item
+        matchingItem = item;
       }
     });
 
@@ -86,8 +87,16 @@ document.querySelectorAll('.js-add-to-cart')//this will select all the add to ca
         productId : productId,
         quantity : 1
       });
-    }
-  
-    console.log(cart);
+    }  
+
+    // add total cart quantity for homepage cart corner
+    let cartQuantity = 0;
+    
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+      
+    });
+    
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
   });
-})
+});
