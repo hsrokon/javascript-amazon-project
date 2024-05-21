@@ -72,8 +72,8 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;//changing 
 function updateCartQuantity () {
    // add total cart quantity for homepage cart corner
    let cartQuantity = 0; 
-   cart.forEach((cartItem) => {
-     cartQuantity += cartItem.quantity; 
+   cart.forEach((cartItem) => {//by forEach we enter into cart and save data into cartItem (parameter)
+     cartQuantity += cartItem.quantity; //here we access just quantity from the parameter above
    });
    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
