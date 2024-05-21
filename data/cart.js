@@ -28,7 +28,7 @@ export function removeFromCart (productId) {
 
   //it's gonna contain all the cart items that don't match this productID | that's same as removing it from the cart | by looping through the cart in new array we're going to add each product except for this productId
   cart.forEach((cartItem) => {
-    if (cartItem.productId !== productId) {
+    if (cartItem.productId !== productId) {//this productID is from the checkout.js where we called removeFromCart(productId)
       newCart.push(cartItem);
     }
   });
