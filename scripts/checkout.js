@@ -1,15 +1,15 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, updateDliveryOption } from "../data/cart.js";
 import { products } from "../data/products.js";
-import { formatCurrency } from "./utils/money.js";
-import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js"; 
+import { formatCurrency } from "./utils/money.js"; 
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; //ESM Version library = EcmaScript(another name of JS) Module to import files exported from online files | dayjs here is default import that uses no {}
 import { deliveryOptions } from "../data/deliveryOptions.js";
 
-hello();
-
+//just a trial
 const today =dayjs();
 const deliveryDate = today.add(7, 'days');
 console.log(deliveryDate.format('dddd, MMMM D'));// according to the documentation format [https://day.js.org/docs/en/display/format] |Wednesday, May 29 |
+
+
 
 let cartSummaryHTML = '';
 
@@ -19,7 +19,7 @@ cart.forEach((cartItem) => {
   let matchingProduct;
   products.forEach((product) => {
     if (product.id===productId) {
-      matchingProduct = product;
+      matchingProduct = product;//if product id matches than we transfer every product data to matchingProduct so we can use id, image name from it
     }
   });
 
@@ -28,12 +28,16 @@ cart.forEach((cartItem) => {
 
   let deliveryOption;
 
-  deliveryOptions.forEach ((option) => {
-    if (option.id === deliveryOptionId) {
-      deliveryOption = option;
+  deliveryOptions.forEach ((option) => {//from deliveryOptions.js
+    if (option.id === deliveryOptionId) {// between deliveryOptions delivery id and cart's deliveryOptionId
+      deliveryOption = option;//than we transfer every deliveryOptions data to deliveryOption
     }
   });
 
+  //now we got everything from products into matchingProducts
+  //everything from deliveryOptions into deliveryOption
+
+  //this code is just for the dateString
   const today = dayjs();
   const deliveryDate = today.add(
     deliveryOption.deliveryDays, 'days'
@@ -83,7 +87,7 @@ cart.forEach((cartItem) => {
   `;
 });
 
-function deliveryOptionsHTML (matchingProduct, cartItem) {
+function deliveryOptionsHTML (matchingProduct, cartItem) {//dateString, PriceString and checking is under deliveryOptionsHTML
   let html = '';
   
   deliveryOptions.forEach((deliveryOption) => {//deliveryOptions is from deliveryOptions.js
@@ -99,17 +103,17 @@ function deliveryOptionsHTML (matchingProduct, cartItem) {
     === 0
       ? 'FREE'
       : `$${formatCurrency(deliveryOption.priceCents)} -`;
-
 //if first part returns true the value is whatever after question mark
 //if first part returns false the value is whatever after colon
 
-  const isChecked = deliveryOption.id === cartItem.deliveryOptionId;//this cartItem is from cart.forEach((cartItem)
-
+  const isChecked = deliveryOption.id === cartItem.deliveryOptionId;//this is for checking the options
 
     html+=`
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option"
+    data-product-id ="${matchingProduct.id}"
+    data-delivery-option-id="${deliveryOption.id}" >
     <input type="radio"
-    ${isChecked ? 'checked' : '' }<!--'checked' is checking the option-->
+    ${isChecked ? 'checked' : '' }
       class="delivery-option-input"
       name="delivery-option-${matchingProduct.id}">
     <div>
@@ -126,8 +130,12 @@ function deliveryOptionsHTML (matchingProduct, cartItem) {
   return html;
 }
 
-document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML;
+document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML;//here we place the cartSummaryHTML into page
 
+
+
+
+//for delleting products
 document.querySelectorAll('.js-delete-link') 
 .forEach((link) => {
   link.addEventListener('click', () => {
@@ -137,4 +145,12 @@ document.querySelectorAll('.js-delete-link')
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     container.remove();
   })
-})
+});
+
+document.querySelectorAll('.js-delivery-option')
+.forEach((element) => {
+  element.addEventListener('click', () => {
+    const {productId, deliveryOptionId} = element.dataset;//shorthand method -> const productId = element.dataset.productId
+    updateDliveryOption(productId, deliveryOptionId);
+  });
+});
