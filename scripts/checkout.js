@@ -10,6 +10,9 @@ const deliveryDate = today.add(7, 'days');
 console.log(deliveryDate.format('dddd, MMMM D'));// according to the documentation format [https://day.js.org/docs/en/display/format] |Wednesday, May 29 |
 
 
+function renderOrderSummary () {
+//we'll update the data and regenerate the HTML
+
 
 let cartSummaryHTML = '';
 
@@ -152,5 +155,11 @@ document.querySelectorAll('.js-delivery-option')
   element.addEventListener('click', () => {
     const {productId, deliveryOptionId} = element.dataset;//shorthand method -> const productId = element.dataset.productId
     updateDliveryOption(productId, deliveryOptionId);
+    renderOrderSummary();//we just regenerated the whole HTML | a function can call/re-run itself = recursion  
   });
 });
+
+}
+
+renderOrderSummary ();
+
