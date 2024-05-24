@@ -1,8 +1,8 @@
 import { cart, removeFromCart, updateDliveryOption } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js"; 
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; //ESM Version library = EcmaScript(another name of JS) Module to import files exported from online files | dayjs here is default import that uses no {}
-import { deliveryOptions } from "../../data/deliveryOptions.js";
+import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 
 //just a trial
 const today =dayjs();
@@ -19,23 +19,13 @@ let cartSummaryHTML = '';
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
 
-  let matchingProduct;
-  products.forEach((product) => {
-    if (product.id===productId) {
-      matchingProduct = product;//if product id matches than we transfer every product data to matchingProduct so we can use id, image name from it
-    }
-  });
+  const matchingProduct = getProduct(productId);//taking carts product id putting it into get product function the result we're saving in matchingProduct
+
 
 
   const  deliveryOptionId = cartItem.deliveryOptionId; //this cartItem is from cart.forEach((cartItem)
 
-  let deliveryOption;
-
-  deliveryOptions.forEach ((option) => {//from deliveryOptions.js
-    if (option.id === deliveryOptionId) {// between deliveryOptions delivery id and cart's deliveryOptionId
-      deliveryOption = option;//than we transfer every deliveryOptions data to deliveryOption
-    }
-  });
+  const deliveryOption = getDeliveryOption(deliveryOptionId);
 
   //now we got everything from products into matchingProducts
   //everything from deliveryOptions into deliveryOption
