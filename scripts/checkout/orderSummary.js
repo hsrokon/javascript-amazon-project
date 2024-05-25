@@ -3,11 +3,8 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js"; 
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; //ESM Version library = EcmaScript(another name of JS) Module to import files exported from online files | dayjs here is default import that uses no {}
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
-//just a trial
-const today =dayjs();
-const deliveryDate = today.add(7, 'days');
-console.log(deliveryDate.format('dddd, MMMM D'));// according to the documentation format [https://day.js.org/docs/en/display/format] |Wednesday, May 29 |
 
 
 export function renderOrderSummary () {
@@ -37,7 +34,7 @@ cart.forEach((cartItem) => {
   );
   const dateString = deliveryDate.format(
     'dddd, MMMM D'
-  );
+  );// according to the documentation format [https://day.js.org/docs/en/display/format] |Wednesday, May 29 |
 
   cartSummaryHTML +=`
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -137,6 +134,8 @@ document.querySelectorAll('.js-delete-link')
 
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     container.remove();
+
+    renderPaymentSummary();//when we click delete instead of using DOM to change these numbers one by one -whwen we click remove it removes product from the cart and by renderPaymentSummary() we regenerate the HTML with new cart data | using model MVC
   })
 });
 
@@ -146,6 +145,7 @@ document.querySelectorAll('.js-delivery-option')
     const {productId, deliveryOptionId} = element.dataset;//shorthand method -> const productId = element.dataset.productId
     updateDliveryOption(productId, deliveryOptionId);
     renderOrderSummary();//we just regenerated the whole HTML | a function can call/re-run itself = recursion  
+    renderPaymentSummary();//using model MVC |Model => View => Controller
   });
 });
 
