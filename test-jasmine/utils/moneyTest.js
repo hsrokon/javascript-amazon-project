@@ -1,4 +1,4 @@
-import { formatCurrency } from '../scripts/utils/money.js';
+import { formatCurrency } from '../../scripts/utils/money.js';
 
 describe ('text suite: formatCurrency', () => {//this describe function is provided by Jasminewhich creates a test suite
 
