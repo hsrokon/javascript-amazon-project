@@ -1,4 +1,4 @@
-export let cart;
+export let cart;//shortcut for: let cart = undefined;
 
 loadFromStorage();
 
