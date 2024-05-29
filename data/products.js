@@ -33,6 +33,29 @@ class Product {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   } 
+
+  extraInfoHTML() {
+    return '';
+  }
+}
+
+class Clothing extends Product {//INHERITENCE
+  //clothing will inherit all the properties and methods of Product class
+  sizeChartLink;
+
+  constructor (productDetails) {
+    super(productDetails);//it simply calls the constructor of the parent class and that will set the id/image/name
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraInfoHTML() {
+    //super.extraInfoHTML();
+    return `
+      <a href="${this.sizeChartLink}" target="_blank">
+      Size chart
+      </a>
+    `;
+  }
 }
 
 
@@ -696,6 +719,11 @@ export const products = [
     ]
   }
 ].map((productDetails) => {//.map loops through an array and for each value it runs a function | and we save it 'productDetails' in parameter
+
+  if (productDetails.type === 'clothing') {
+    return new Clothing(productDetails);
+  }
+
   return new Product (productDetails);//.map creates a new array whenever we return from this inner function, it's gonna go inside that new array
   //here we're essentially transforming each of this products with this regular objects (const products = [}) into a class |--- we converted all of our products from regular objects into this Product class(new Product (productDetails))
 });
