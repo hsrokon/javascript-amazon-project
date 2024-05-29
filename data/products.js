@@ -58,6 +58,40 @@ class Clothing extends Product {//INHERITENCE
   }
 }
 
+/*
+const date = new Date();
+console.log(date);
+console.log(date.toLocaleTimeString());
+*/
+
+/*
+console.log(this);//undefined
+
+const object2 = {
+  aa : 2,
+  bb : this.aa//this in undefined | There is no object to point if we're outside of a method
+};
+*/
+
+/*
+function logThis() {//inside a function we can "this" to whatever we want
+  console.log(this)//undefined
+}
+logThis();
+logThis.call('hellow');//.call is same as calling or running the function except we add an extra parameter infront as a value of "this"
+
+//Arrow functiion donot change the value of "this"
+const object3 = {
+  method : () => {
+    console.log(this);//"this" keeps the value that it had outside the arrow function
+  }
+};
+object3.method();
+---/*
+1. inside a method "this" points to the outer object
+2. inside a function this is undefined(no object to point) | but we can change it
+3. arrow functions do not change the value of "this"
+*/
 
 export const products = [
   {
