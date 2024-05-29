@@ -1,3 +1,5 @@
+import { formatCurrency } from "../scripts/utils/money.js"
+
 export function getProduct (productId) {
     let matchingProduct;
 
@@ -8,6 +10,31 @@ export function getProduct (productId) {
     });
     return matchingProduct;
 }
+
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+  constructor (productDetails) {//whenever we gnrt an obj it'll run this constructor
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }//methods advanced feature of Class
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`;
+  } 
+}
+
 
 export const products = [
   {
@@ -668,4 +695,7 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((productDetails) => {//.map loops through an array and for each value it runs a function | and we save it 'productDetails' in parameter
+  return new Product (productDetails);//.map creates a new array whenever we return from this inner function, it's gonna go inside that new array
+  //here we're essentially transforming each of this products with this regular objects (const products = [}) into a class |--- we converted all of our products from regular objects into this Product class(new Product (productDetails))
+});
