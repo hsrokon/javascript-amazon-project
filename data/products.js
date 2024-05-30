@@ -93,6 +93,7 @@ object3.method();
 3. arrow functions do not change the value of "this"
 */
 
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -761,3 +762,29 @@ export const products = [
   return new Product (productDetails);//.map creates a new array whenever we return from this inner function, it's gonna go inside that new array
   //here we're essentially transforming each of this products with this regular objects (const products = [}) into a class |--- we converted all of our products from regular objects into this Product class(new Product (productDetails))
 });
+*/
+
+export let products = [];
+
+export function loadProducts (fun) {//we saved renderProductsGrid() into fun parameter | after we load the response we run renderProductsGrid() | callback function -> a function to run in the future
+  const xhr = new XMLHttpRequest();
+
+
+  xhr.addEventListener('load', () => {
+    //getting the response | 'xhr.response' is the response
+    products = JSON.parse(xhr.response).map((productDetails) => {
+
+        if (productDetails.type === 'clothing') {
+          return new Clothing(productDetails);
+        }
+        return new Product(productDetails);
+      })//we converted the response from JSON into JS array then classes
+      console.log('load products')
+
+    fun();//after we load the response we run renderProductsGrid()
+  });
+
+
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();//it's asynchronous | it'll just sent req bt will not wait
+}
