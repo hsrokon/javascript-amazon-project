@@ -67,3 +67,16 @@ export function updateDliveryOption (productId, deliveryOptionId) {
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();
 }
+
+export function loadCart(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    console.log(xhr.response);
+    fun();//after we load the response we run renderProductsGrid()
+  });
+
+
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();//it's asynchronous | it'll just sent req bt will not wait
+}
