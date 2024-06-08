@@ -6,6 +6,22 @@ import { loadCart } from "../data/cart.js";
 //import "../data/backend-practice.js";
 
 
+//Async Await even better way to handle code | Promise creates a lot of extra codes | async makes a function return a promise | async lets us use await which lets us wait for promise to finish before going to next line | only works with promises| functions needs to be async, donot work with normal functon
+async function loadPage() {
+  await loadProductsFetch();
+
+  const value = await new Promise ( (resolve) => {
+    loadCart( () => {
+      resolve('value33'); //we can save whatever in resolve inside a variable instead .then | 'const value = '
+    });
+  });
+
+  renderOrderSummary();
+  renderPaymentSummary();
+}
+loadPage();
+
+/*
 Promise.all([//let's us run multiple Promises at the same time and wait for all of them to finish | Array of promises
   loadProductsFetch(),//this will return a promise when we use it with Promise.all
   new Promise ( (resolve) => {
@@ -18,6 +34,7 @@ Promise.all([//let's us run multiple Promises at the same time and wait for all 
   renderOrderSummary();
   renderPaymentSummary();
 });
+*/
 
 /*just kept it
 Promise.all([//let's us run multiple Promises at the same time and wait for all of them to finish | Array of promises
