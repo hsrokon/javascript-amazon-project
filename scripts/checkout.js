@@ -1,11 +1,25 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-import { loadProducts } from "../data/products.js";
+import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 //import '../data/cart-class.js';
 //import "../data/backend-practice.js";
 
 
+Promise.all([//let's us run multiple Promises at the same time and wait for all of them to finish | Array of promises
+  loadProductsFetch(),//this will return a promise when we use it with Promise.all
+  new Promise ( (resolve) => {
+    loadCart( () => {
+      resolve();
+    });
+  })
+]).then( (values) => {
+  console.log(values);
+  renderOrderSummary();
+  renderPaymentSummary();
+});
+
+/*just kept it
 Promise.all([//let's us run multiple Promises at the same time and wait for all of them to finish | Array of promises
   new Promise( (resolve) => {
     loadProducts( () => {
@@ -21,7 +35,7 @@ Promise.all([//let's us run multiple Promises at the same time and wait for all 
   console.log(values);
   renderOrderSummary();
   renderPaymentSummary();
-});
+}); */
 
 
 /*

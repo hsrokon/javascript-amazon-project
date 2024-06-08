@@ -766,6 +766,31 @@ export const products = [
 
 export let products = [];
 
+
+//fetch() = better way to make http request | it uses promises directly
+export function loadProductsFetch() {
+
+//fetch() makes an http req | by default it'll make a 'GET' req, we just need to provide the link | working step: fetch send req to backend -> will get a response -> it's going to go to next step | it's going to save response inside param ('response')
+const promise =  fetch('https://supersimplebackend.dev/products').then( (response) => {
+    return response.json();//return a promise will wait that promise to finish
+  }).then( (productsData) => {//previous response will save it's data into productsData param
+    products = productsData.map((productDetails) => {
+      if (productDetails.type === 'clothing') {
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    })
+    console.log('load products');
+  });
+  return promise;
+}
+
+/*
+loadProductsFetch().then( () => {
+    console.log('next step');
+});
+*/
+
 export function loadProducts (fun) {//we saved renderProductsGrid() into fun parameter | after we load the response we run renderProductsGrid() | callback function -> a function to run in the future
   const xhr = new XMLHttpRequest();
 
