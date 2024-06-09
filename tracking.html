@@ -88,5 +88,12 @@
         </div>
       </div>
     </div>
+
+    <script>
+      const url = new URL(window.location.href)//this URL class analyze the URL that we give it -> breaks it down into diffrent parts | one of the parts is URL parameter also called search parameters | it gets us the URL at the top of the browser so we can aceess the value after it's parameter '?'
+
+      console.log(url.searchParams.get('orderId'));
+      console.log(url.searchParams.get('productId'));
+    </script>
   </body>
 </html>
