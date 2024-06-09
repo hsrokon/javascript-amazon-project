@@ -781,7 +781,10 @@ const promise =  fetch('https://supersimplebackend.dev/products').then( (respons
       return new Product(productDetails);
     })
     console.log('load products');
+  }).catch( (error) => {//error parameter contain info about error
+    console.log('Unexpected error. Please try again later.');
   });
+
   return promise;
 }
 
@@ -809,6 +812,10 @@ export function loadProducts (fun) {//we saved renderProductsGrid() into fun par
     fun();//after we load the response we run renderProductsGrid()
   });
 
+  //Handling Error
+  xhr.addEventListener('error', (error) => {
+    console.log('Unexpected error. Please try again later.')
+  });
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();//it's asynchronous | it'll just sent req bt will not wait

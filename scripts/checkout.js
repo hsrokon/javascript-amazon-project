@@ -8,14 +8,22 @@ import { loadCart } from "../data/cart.js";
 
 //Async Await even better way to handle code | Promise creates a lot of extra codes | async makes a function return a promise | async lets us use await which lets us wait for promise to finish before going to next line | only works with promises| functions needs to be async, donot work with normal functon
 async function loadPage() {
-  await loadProductsFetch();
+  try {//if code inside try gets error it'll run catch below which takes one param 'error' | try catch can also be used with normal code other than async await
+    //throw 'error1'//creates an error | which skips codes till catch
+    await loadProductsFetch();
 
-  const value = await new Promise ( (resolve) => {
-    loadCart( () => {
-      resolve('value33'); //we can save whatever in resolve inside a variable instead .then | 'const value = '
+    const value = await new Promise ( (resolve, reject) => {
+      //throw 'error2'
+      loadCart( () => {
+        //reject('error3');//reject is function which lets us create an error in futre
+        resolve('value33'); //we can save whatever in resolve inside a variable instead .then | 'const value = '
+      });
     });
-  });
 
+  } catch (error) {
+    console.log('Unexpected error. Please try again later.');
+  }
+  
   renderOrderSummary();
   renderPaymentSummary();
 }
