@@ -2,6 +2,7 @@ import { cart } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 
 export function renderPaymentSummary () {
@@ -54,11 +55,47 @@ export function renderPaymentSummary () {
       $${formatCurrency(totalCents)}</div>
     </div>
 
-    <button class="place-order-button button-primary">
+    <button class="place-order-button button-primary
+    js-place-order">
       Place your order
     </button>
   `;
 
   document.querySelector('.js-payment-summary')
     .innerHTML = paymentSummaryHTML;
+//make a req to backend to create the order
+  document.querySelector('.js-place-order')
+  .addEventListener('click', async () => {
+
+    try {
+      const response = await fetch('https://supersimplebackend.dev/orders', {
+        method: 'POST',
+        headers: {//it precises our request
+          'Content-Type' : 'application/json'//this tells backend what type of data we're sending in our req
+        },
+        body: JSON.stringify({// this is the actual data we're going to send to the backend
+          
+          //we need to send an object with a property called cart which contains our cart array
+          cart : cart // 1st cart is property |which contains 2nd cart array
+        })
+      });
+  
+      const order = await response.json()//response.json is a promise se we use await
+      addOrder(order);
+
+    } catch (error) {
+      console.log('Uexpected error. Please try again later.');
+    }
+    
+//window.location lets us control the URL
+//if we change the href property it'll change the URL 
+    window.location.href = 'orders.html';//changing it to orders.html
+  });
 };
+/*
+-4 types of request
+GET = get something from backend
+POST = create something
+PUT = update something
+DELETE = delete something
+*/
